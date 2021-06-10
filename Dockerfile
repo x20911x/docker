@@ -20,5 +20,7 @@ RUN ["sh", "-c","echo $HOME"]
 USER sam
 RUN ["sh", "-c","echo $HOME"]
 
+EXPOSE 8888
+
 ENTRYPOINT python main.py
 
