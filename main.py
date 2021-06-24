@@ -3,7 +3,7 @@ import redis
 from flask import Flask
 
 app = Flask(__name__)
-cache = redis.Redis(host='127.0.0.1', port=16379, password='1234qwer')
+cache = redis.Redis(host='gfl_redis', port=6379, password='1234qwer')
 
 
 def get_hit_count():

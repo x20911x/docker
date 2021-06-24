@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+#    build: .
+    image: flask-redis0624:v1
+    ports:
+    - "18888:8888"
+    volumes:
+    - .:/code # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
+    links:
+      - gfl_redis
+    restart: always
+
+  gfl_redis:
+    image: ${redis_image}
+    command: redis-server --requirepass ${redis_password}
+    ports:
+      - ${redis_port}:6379
+    volumes:
+      - /data/redis-data:/data
+    restart: always
