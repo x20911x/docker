@@ -13,7 +13,7 @@ apt-get install -y vim && \
 usermod -s /bin/bash sam
 
 #COPY $demoFile ./mypath/
-COPY $demoFile main.py requirements.txt ./
+COPY $demoFile main.py requirements.txt .env ./
 #COPY $demoFile ./mypath/Dockerfile2
 
 #ADD https://ftp.cdc.gov/pub/health_Statistics/nchs/publications/ICD10CM/2019/icd10cm_tabular_2019.xml .

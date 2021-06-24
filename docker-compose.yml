@@ -2,7 +2,7 @@ version: '3'
 services:
   web:
 #    build: .
-    image: flask-redis0624:v1
+    image: ${flask_image}
     ports:
     - "18888:8888"
     volumes:
