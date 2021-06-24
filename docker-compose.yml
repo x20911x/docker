@@ -6,7 +6,7 @@ services:
     ports:
     - "18888:8888"
     volumes:
-    - .:/code # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
+    - .:/myapp # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
     links:
       - gfl_redis
     restart: always
