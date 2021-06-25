@@ -24,6 +24,10 @@ RUN pip install -r requirements.txt
 #USER sam
 #RUN ["sh", "-c","echo $HOME"]
 
+VOLUME ["/demo1","/demo2"]
+VOLUME /var/log
+
+
 EXPOSE 8888
 
 ENTRYPOINT python main.py
