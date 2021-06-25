@@ -1,6 +1,13 @@
 version: '3'
 services:
-  web:
+  flask-course:
+    environment:
+      config_env: 'docker'
+      redis_container_port: "6379"
+      PYTHONUNBUFFERED: 1
+
+    depends_on: # 依賴 gfl_mariadb 服務
+      - gfl_mariadb
 #    build: . # 用Dockerfile建立image
     image: ${flask_image} # 定義image name
     ports: # port <host port>:<container port>
@@ -9,6 +16,7 @@ services:
     - .:/myapp # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
     links:  # 連結到 redis，讓兩個 container 可以互通網路
       - gfl_redis
+      - gfl_mariadb
     restart: always #
     container_name: flask_box # 指定container name
 
@@ -22,3 +30,14 @@ services:
       - /data/redis-data:/data
     restart: always
     container_name: redis_box
+
+  gfl_mariadb:
+    image: "${db_image}"
+    ports:
+      - "${db_port}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${db_root_password}"
+    volumes:
+      - ./gfl_mariadb_data/:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
