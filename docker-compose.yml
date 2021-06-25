@@ -1,15 +1,17 @@
 version: '3'
 services:
   web:
-#    build: .
-    image: ${flask_image}
-    ports:
+#    build: . # 用Dockerfile建立image
+    image: ${flask_image} # 定義image name
+    ports: # port <host port>:<container port>
     - "18888:8888"
-    volumes:
+    volumes: # <local volumes>:<container volumes>
     - .:/myapp # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
-    links:
+    links:  # 連結到 redis，讓兩個 container 可以互通網路
       - gfl_redis
-    restart: always
+    restart: always #
+    container_name: flask_box # 指定container name
+
 
   gfl_redis:
     image: ${redis_image}
@@ -19,3 +21,4 @@ services:
     volumes:
       - /data/redis-data:/data
     restart: always
+    container_name: redis_box
