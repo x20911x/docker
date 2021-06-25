@@ -6,10 +6,13 @@ services:
       redis_container_port: "6379"
       PYTHONUNBUFFERED: 1
 
-    depends_on: # 依賴 gfl_mariadb 服務
+    depends_on: # 依賴 gfl_mariadb & gfl_redis服務
       - gfl_mariadb
+      - gfl_redis
 #    build: . # 用Dockerfile建立image
     image: ${flask_image} # 定義image name
+    networks:
+      - my-network
     ports: # port <host port>:<container port>
     - "18888:8888"
     volumes: # <local volumes>:<container volumes>
@@ -23,6 +26,8 @@ services:
 
   gfl_redis:
     image: ${redis_image}
+    networks:
+      - my-network
     command: redis-server --requirepass ${redis_password}
     ports:
       - ${redis_port}:6379
@@ -33,6 +38,8 @@ services:
 
   gfl_mariadb:
     image: "${db_image}"
+    networks:
+      - my-network
     ports:
       - "${db_port}:3306"
     environment:
@@ -41,3 +48,10 @@ services:
       - ./gfl_mariadb_data/:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
+
+
+networks:
+  my-network:
+    external:
+      name: my-network
+
