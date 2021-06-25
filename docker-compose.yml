@@ -14,9 +14,9 @@ services:
     - "18888:8888"
     volumes: # <local volumes>:<container volumes>
     - .:/myapp # 把當前資料夾 mount 掛載進去 container，這樣你可以直接在本地端專案資料夾改動檔案，container 裡面的檔案也會更動也不用重新 build image！
-    links:  # 連結到 redis，讓兩個 container 可以互通網路
-      - gfl_redis
-      - gfl_mariadb
+    networks:
+      - frontend
+      - backend
     restart: always #
     container_name: flask_box # 指定container name
 
@@ -28,6 +28,8 @@ services:
       - ${redis_port}:6379
     volumes:
       - /data/redis-data:/data
+    networks:
+      - frontend
     restart: always
     container_name: redis_box
 
@@ -40,4 +42,15 @@ services:
     volumes:
       - ./gfl_mariadb_data/:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - backend
     restart: unless-stopped
+
+
+networks:
+  backend:
+    external:
+      name: backend
+  frontend:
+    external:
+      name: frontend
